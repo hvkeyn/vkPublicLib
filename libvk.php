@@ -81,6 +81,18 @@ class VKPublic
             'count' => $ColMessage,
         ));
     } 
+	
+	 /**
+     * @param mixed $searchGroupId - Group(s) number
+	 * @param mixed $moreFields - Additional fields
+     * @return mixed
+     */
+    public function getById($searchGroupId, $moreFields=false)
+    {
+        return $this->callMethodGet('groups.getById', array(
+            'gid' => $searchGroupId,  // one param only!
+        ));
+    } 
     
         /**
      * @param string $message
@@ -154,14 +166,14 @@ class VKPublic
         curl_setopt($ch, CURLOPT_HEADER, false);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		if($yesno > 0){
+		if($yesno == 0){
+        curl_setopt($ch, CURLOPT_POSTFIELDS, array(
+		'photo' => '@'.dirname(__FILE__).'/image0.jpg'
+        ));		
+		} else {
         curl_setopt($ch, CURLOPT_POSTFIELDS, array(
 		'file'.$yesno => '@'.dirname(__FILE__).'/image0.jpg'
-        )); 
-		} else {
-	    curl_setopt($ch, CURLOPT_POSTFIELDS, array(
-		'file1' => '@'.dirname(__FILE__).'/image0.jpg'
-        )); 	
+        ));
 		}
  
         if (($upload = curl_exec($ch)) === false) {
